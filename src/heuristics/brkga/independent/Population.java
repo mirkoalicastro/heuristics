@@ -27,6 +27,9 @@ public class Population implements Iterable<Individual> {
     Individual get(int i) {
         return individuals[i];
     }
+    void set(int i, Individual individual) {
+        individuals[i] = individual;
+    }
     void applyToAll(Consumer<? super Individual> c, boolean parallel) {
         Stream<Individual> stream = Arrays.stream(individuals);
         if(parallel)
