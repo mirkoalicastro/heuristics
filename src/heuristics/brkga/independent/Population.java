@@ -1,5 +1,6 @@
 package heuristics.brkga.independent;
 
+import heuristics.Vector;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -11,33 +12,29 @@ import java.util.stream.Stream;
  * A population made up by individuals
  * @author Mirko Alicastro {@link https://mirkoalicastro.com}
  */
-public class Population implements Iterable<Individual> {
-    private final Individual[] individuals;
-    private final Comparator<? super Individual> comparator;
-    Population(Consumer<? super Individual> consumer, Comparator<? super Individual> comparator, int p, int n) {
-        individuals = new Individual[p];
-        for(int i=0; i<individuals.length; i++) {
-            individuals[i] = new Individual(n);
-            consumer.accept(individuals[i]);
-        }
-        this.comparator = comparator;
+public class Population implements Iterable<Vector> {
+    private final Vector[] individuals;
+    Population(int p, int n) {
+        individuals = new Vector[p];
+        for(int i=0; i<individuals.length; i++)
+            individuals[i] = new Vector(n);
     }
-    Individual get(int i) {
+    Vector get(int i) {
         return individuals[i];
     }
-    void set(int i, Individual individual) {
+    void set(int i, Vector individual) {
         individuals[i] = individual;
     }
-    void applyToAll(Consumer<? super Individual> c, boolean parallel) {
-        Stream<Individual> stream = Arrays.stream(individuals);
+    void applyToAll(Consumer<? super Vector> c, boolean parallel) {
+        Stream<Vector> stream = Arrays.stream(individuals);
         if(parallel)
             stream = stream.parallel();
         stream.forEach(c);
     }
-    void parallelSort() {
+    void parallelSort(Comparator<? super Vector> comparator) {
         Arrays.parallelSort(individuals, comparator);
     }
-    void sort() {
+    void sort(Comparator<? super Vector> comparator) {
         Arrays.sort(individuals, comparator);
     }
 
@@ -48,8 +45,8 @@ public class Population implements Iterable<Individual> {
      * @return iterator over individuals
      */
     @Override
-    public Iterator<Individual> iterator() {
-        return new Iterator<Individual>() {
+    public Iterator<Vector> iterator() {
+        return new Iterator<Vector>() {
             int i = 0;
             @Override
             public boolean hasNext() {
@@ -57,7 +54,7 @@ public class Population implements Iterable<Individual> {
             }
 
             @Override
-            public Individual next() {
+            public Vector next() {
                 if(!hasNext())
                     throw new NoSuchElementException();
                 return individuals[i++];

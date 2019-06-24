@@ -37,12 +37,13 @@ public class SimulatedAnnealingBatch extends Batch {
      * neighbors
      * @param stoppingCriterion the predicate that returns true if the stopping
      * criterion has been met
+     * @param seed
      */
     public SimulatedAnnealingBatch (int numThreads, float t0, float tDelta, Function<? super Vector, Double> decoder, Comparator<? super Vector> fitnessFunction, Vector[] feasibleSolutions, Function<Vector, Vector> randomFeasibleNeighbor, Predicate<? super SimulatedAnnealing> stoppingCriterion, long seed) {
         if(numThreads < 1)
             throw new IllegalArgumentException("There must be at least one thread");
         if(numThreads != feasibleSolutions.length)
-            throw new IllegalArgumentException("There number of threads and the array length of feasible solutions must be the same");
+            throw new IllegalArgumentException("The number of threads and the array length of feasible solutions must be the same");
         SimulatedAnnealing[] simulatedAnnealings = new SimulatedAnnealing[numThreads];
         for(int i=0; i<simulatedAnnealings.length; i++) {
             Random random = new Random();

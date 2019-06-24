@@ -35,10 +35,9 @@ public class TabuSearch extends Heuristic {
      * neighbors
      * @param stoppingCriterion the predicate that returns true if the stopping
      * criterion has been met
-     * @throws IllegalArgumentException if the tabu list size is not greater
      * than 0
      */
-    TabuSearch(int tabuListSize, Function<? super Vector, Double> decoder, Comparator<? super Vector> fitnessFunction, Vector feasibleSolution, Function<Vector, List<Vector>> neighborhood, Predicate<? super TabuSearch> stoppingCriterion, Random random) throws IllegalArgumentException {
+    TabuSearch(int tabuListSize, Function<? super Vector, Double> decoder, Comparator<? super Vector> fitnessFunction, Vector feasibleSolution, Function<Vector, List<Vector>> neighborhood, Predicate<? super TabuSearch> stoppingCriterion, Random random) {
         this.decoder = decoder;
         this.fitnessFunction = fitnessFunction;
         this.neighborhood = neighborhood;
@@ -93,7 +92,7 @@ public class TabuSearch extends Heuristic {
     private static class LimitedList<T> extends LinkedList<T> {
         int capacity;
         
-        LimitedList(int capacity) throws IllegalArgumentException {
+        LimitedList(int capacity) {
             if(capacity < 1)
                 throw new IllegalArgumentException("Limited list capacity must be greater than 0");
             this.capacity = capacity;

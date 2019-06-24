@@ -21,25 +21,26 @@ import java.util.function.Consumer;
  */
 public class GeneticAlgorithm extends Heuristic {
     private final Configuration configuration;
-    private final Consumer<? super Individual> individualGenerator;
+    private final Consumer<? super Vector> individualGenerator;
     private final Population population;
     private final List<Integer> mutantsRemainingIndex;
-    private final Function<? super Individual, Double> decoder;
+    private final Function<? super Vector, Double> decoder;
     private final Predicate<Heuristic> stoppingCriterion;
-    private final BiFunction<? super Individual, ? super Individual, Individual> crossingOver;
+    private final BiFunction<? super Vector, ? super Vector, Vector> crossingOver;
     private final List<Integer> mutantsSelectedIndex;
         
     private final Random rand;
     private final Comparator<? super Vector> fitnessFunction;
     
-    GeneticAlgorithm(Comparator<? super Vector> fitnessFunction, Configuration configuration, BiFunction<? super Individual, ? super Individual, Individual> crossingOver, Consumer<? super Individual> individualGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
+    GeneticAlgorithm(Comparator<? super Vector> fitnessFunction, Configuration configuration, BiFunction<? super Vector, ? super Vector, Vector> crossingOver, Consumer<? super Vector> individualGenerator, Function<? super Vector, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
         this.stoppingCriterion = stoppingCriterion;
         this.fitnessFunction = fitnessFunction;
         this.configuration = configuration;
         this.crossingOver = crossingOver;
         this.individualGenerator = individualGenerator;
         this.decoder = decoder;
-        population = new Population(individualGenerator, fitnessFunction, configuration.p, configuration.n);
+        population = new Population(configuration.p, configuration.n);
+        population.applyToAll(individualGenerator, true);
         evaluateAndThenSortPopulation();
         mutantsRemainingIndex = IntStream.range((int)(configuration.pe*configuration.p)+1, configuration.p).boxed().collect(Collectors.toCollection(ArrayList::new));
         mutantsSelectedIndex = new LinkedList<>();
@@ -48,12 +49,12 @@ public class GeneticAlgorithm extends Heuristic {
             random.setSeed(System.nanoTime());
         }
         this.rand = random;
-        super.updateBest(new Individual(population.get(0)));
+        super.updateBest(new Vector(population.get(0)));
     }
     
     private void evaluateAndThenSortPopulation() {
         population.applyToAll(individual -> individual.setValue(decoder.apply(individual)), true);
-        population.sort();
+        population.sort(fitnessFunction);
     }
     
     /**
@@ -68,9 +69,9 @@ public class GeneticAlgorithm extends Heuristic {
         super.increaseIterations();
         int eliteSize = (int)(configuration.pe*configuration.p);
         for(int i=eliteSize; i<configuration.p; i++) {
-            Individual notElite = population.get(i);
+            Vector notElite = population.get(i);
             int eliteIndex = rand.nextInt(eliteSize);
-            Individual elite = population.get(eliteIndex);
+            Vector elite = population.get(eliteIndex);
             population.set(i, crossingOver.apply(elite, notElite));
         }
         int mutantsSize = (int)(configuration.pm*configuration.p);
@@ -82,9 +83,9 @@ public class GeneticAlgorithm extends Heuristic {
         mutantsRemainingIndex.addAll(mutantsSelectedIndex);
         mutantsSelectedIndex.clear();
         evaluateAndThenSortPopulation();
-        Individual tmpIndividual = population.get(0);
-        if(fitnessFunction.compare(tmpIndividual, super.getBestVector()) < 0)
-            super.updateBest(new Individual(tmpIndividual));
+        Vector tmpVector = population.get(0);
+        if(fitnessFunction.compare(tmpVector, super.getBestVector()) < 0)
+            super.updateBest(new Vector(tmpVector));
         return true;
     }
 }

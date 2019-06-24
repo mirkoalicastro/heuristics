@@ -36,7 +36,7 @@ public class GeneticBatch extends Batch {
      * criterion has been met
      * @param seed the seed to utilize for random calls.
      */
-    public GeneticBatch(Comparator<? super Vector> fitnessFunction, Configuration config, BiFunction<? super Individual, ? super Individual, Individual> heredityRule, Consumer<? super Individual> individualGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, long seed) {
+    public GeneticBatch(Comparator<? super Vector> fitnessFunction, Configuration config, BiFunction<? super Vector, ? super Vector, Vector> heredityRule, Consumer<? super Vector> individualGenerator, Function<? super Vector, Double> decoder, Predicate<Heuristic> stoppingCriterion, long seed) {
         if(config.ip < 1)
             throw new IllegalArgumentException("At least 1 thread");
         GeneticAlgorithm[] geneticAlgorithms = new GeneticAlgorithm[config.ip];

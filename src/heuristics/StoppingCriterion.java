@@ -47,7 +47,7 @@ public class StoppingCriterion implements Predicate<Heuristic> {
         this.maxIterationsWithNoIncrement = maxIterationsWithNoIncrement;
         this.timeLimit = timeLimit*1000;
         this.comparator = comparator;
-        Vector vector = new Vector(1);
+        Vector vector = new Vector((double[])null);
         vector.setValue(stoppingOFV);
         this.stoppingVector = vector;
         resetTime();

@@ -40,7 +40,7 @@ public class TabuSearchBatch extends Batch {
         if(numThreads < 1)
             throw new IllegalArgumentException("There must be at least one thread");
         if(numThreads != feasibleSolutions.length)
-            throw new IllegalArgumentException("There number of threads and the array length of feasible solutions must be the same");
+            throw new IllegalArgumentException("The number of threads and the array length of feasible solutions must be the same");
         TabuSearch[] tabuSearches = new TabuSearch[numThreads];
         for(int i=0; i<tabuSearches.length; i++) {
             Random random = new Random();
