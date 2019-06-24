@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import heuristics.Vector;
-import heuristics.Evaluator;
 import heuristics.FitnessFunction;
 import heuristics.Heuristic;
 import java.util.Random;
@@ -22,7 +21,7 @@ public class TabuSearch extends Heuristic {
     private final LimitedList<Vector> tabuList;
     private Vector curVector;
     
-    private final Evaluator decoder;
+    private final Function<? super Vector, Double> decoder;
     private final FitnessFunction fitnessFunction;
     
     private final Random random;
@@ -39,14 +38,14 @@ public class TabuSearch extends Heuristic {
      * @throws IllegalArgumentException if the tabu list size is not greater
      * than 0
      */
-    TabuSearch(int tabuListSize, Evaluator decoder, FitnessFunction fitnessFunction, Vector feasibleSolution, Function<Vector, List<Vector>> neighborhood, Predicate<? super TabuSearch> stoppingCriterion, Random random) throws IllegalArgumentException {
+    TabuSearch(int tabuListSize, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction, Vector feasibleSolution, Function<Vector, List<Vector>> neighborhood, Predicate<? super TabuSearch> stoppingCriterion, Random random) throws IllegalArgumentException {
         this.decoder = decoder;
         this.fitnessFunction = fitnessFunction;
         this.neighborhood = neighborhood;
         this.stoppingCriterion = stoppingCriterion;
         tabuList = new LimitedList<>(tabuListSize);
         curVector = new Vector(feasibleSolution);
-        curVector.setValue(decoder.eval(curVector));
+        curVector.setValue(decoder.apply(curVector));
         if(random == null) {
             random = new Random();
             random.setSeed(System.nanoTime());
@@ -87,7 +86,7 @@ public class TabuSearch extends Heuristic {
     }
     
     private void evaluateAndThenSortNeighbors(List<Vector> neighbors) {
-        neighbors.parallelStream().forEach(neighbor -> neighbor.setValue(decoder.eval(neighbor)));
+        neighbors.parallelStream().forEach(neighbor -> neighbor.setValue(decoder.apply(neighbor)));
         neighbors.sort(fitnessFunction);
     }
     

@@ -6,7 +6,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import heuristics.FitnessFunction;
 import heuristics.Vector;
-import heuristics.Evaluator;
 
 /**
  *
@@ -39,7 +38,7 @@ public class SimulatedAnnealingBatch extends Batch {
      * @param stoppingCriterion the predicate that returns true if the stopping
      * criterion has been met
      */
-    public SimulatedAnnealingBatch (int numThreads, float t0, float tDelta, Evaluator decoder, FitnessFunction fitnessFunction, Vector[] feasibleSolutions, Function<Vector, Vector> randomFeasibleNeighbor, Predicate<? super SimulatedAnnealing> stoppingCriterion, long seed) {
+    public SimulatedAnnealingBatch (int numThreads, float t0, float tDelta, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction, Vector[] feasibleSolutions, Function<Vector, Vector> randomFeasibleNeighbor, Predicate<? super SimulatedAnnealing> stoppingCriterion, long seed) {
         if(numThreads < 1)
             throw new IllegalArgumentException("There must be at least one thread");
         if(numThreads != feasibleSolutions.length)

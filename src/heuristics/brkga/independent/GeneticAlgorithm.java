@@ -1,6 +1,5 @@
 package heuristics.brkga.independent;
 
-import heuristics.Evaluator;
 import heuristics.FitnessFunction;
 import heuristics.Heuristic;
 import heuristics.brkga.client.Configuration;
@@ -13,6 +12,7 @@ import heuristics.brkga.client.CrossingOver;
 import heuristics.brkga.client.DNAGenerator;
 import java.util.function.Predicate;
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  *
@@ -23,7 +23,7 @@ public class GeneticAlgorithm extends Heuristic {
     private final DNAGenerator individualGenerator;
     private final Population population;
     private final List<Integer> mutantsRemainingIndex;
-    private final Evaluator decoder;
+    private final Function<? super Individual, Double> decoder;
     private final Predicate<Heuristic> stoppingCriterion;
     private final CrossingOver crossingOver;
     private final List<Integer> mutantsSelectedIndex;
@@ -31,14 +31,14 @@ public class GeneticAlgorithm extends Heuristic {
     private final Random rand;
     private final FitnessFunction fitnessFunction;
     
-    GeneticAlgorithm(FitnessFunction fitnessFunction, Configuration configuration, CrossingOver crossingOver, DNAGenerator sequenceGenerator, Evaluator decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
+    GeneticAlgorithm(FitnessFunction fitnessFunction, Configuration configuration, CrossingOver crossingOver, DNAGenerator sequenceGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
         this.stoppingCriterion = stoppingCriterion;
         this.fitnessFunction = fitnessFunction;
         this.configuration = configuration;
         this.crossingOver = crossingOver;
         this.individualGenerator = sequenceGenerator;
         this.decoder = decoder;
-        population = new Population(sequenceGenerator, fitnessFunction, configuration.p, configuration.n);
+        population = new Population(individual -> individual.random(sequenceGenerator), fitnessFunction, configuration.p, configuration.n);
         evaluateAndThenSortPopulation();
         mutantsRemainingIndex = IntStream.range((int)(configuration.pe*configuration.p)+1, configuration.p).boxed().collect(Collectors.toCollection(ArrayList::new));
         mutantsSelectedIndex = new LinkedList<>();
@@ -51,7 +51,7 @@ public class GeneticAlgorithm extends Heuristic {
     }
     
     private void evaluateAndThenSortPopulation() {
-        population.applyToAll(individual -> individual.setValue(decoder.eval(individual)), true);
+        population.applyToAll(individual -> individual.setValue(decoder.apply(individual)), true);
         population.sort();
     }
     

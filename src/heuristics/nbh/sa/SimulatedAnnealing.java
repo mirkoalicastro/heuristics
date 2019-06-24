@@ -4,7 +4,6 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import heuristics.Vector;
-import heuristics.Evaluator;
 import heuristics.FitnessFunction;
 import heuristics.Heuristic;
 
@@ -14,7 +13,7 @@ import heuristics.Heuristic;
  */
 public class SimulatedAnnealing extends Heuristic {
     private Vector curVector;
-    private final Evaluator decoder;
+    private final Function<? super Vector, Double> decoder;
     private final FitnessFunction fitnessFunction;
     private final Predicate<? super SimulatedAnnealing> stoppingCriterion;
     private final Function<Vector, Vector> randomFeasibleNeighbor;
@@ -23,7 +22,7 @@ public class SimulatedAnnealing extends Heuristic {
     private float temperature;
     private final float t0, tDelta;    
 
-    SimulatedAnnealing(float t0, float tDelta, Evaluator decoder, FitnessFunction fitnessFunction, Vector feasibleSolution, Function<Vector, Vector> randomFeasibleNeighbor, Predicate<? super SimulatedAnnealing> stoppingCriterion, Random random) {
+    SimulatedAnnealing(float t0, float tDelta, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction, Vector feasibleSolution, Function<Vector, Vector> randomFeasibleNeighbor, Predicate<? super SimulatedAnnealing> stoppingCriterion, Random random) {
         this.t0 = t0;
         this.tDelta = tDelta;
         this.decoder = decoder;
@@ -31,7 +30,7 @@ public class SimulatedAnnealing extends Heuristic {
         this.randomFeasibleNeighbor = randomFeasibleNeighbor;
         this.stoppingCriterion = stoppingCriterion;
         Vector bestVector = new Vector(feasibleSolution);
-        bestVector.setValue(decoder.eval(bestVector));
+        bestVector.setValue(decoder.apply(bestVector));
         curVector = bestVector;
         temperature = t0;
         if(random == null) {
@@ -54,7 +53,7 @@ public class SimulatedAnnealing extends Heuristic {
         Vector nextVector = randomFeasibleNeighbor.apply(curVector);
         if(nextVector == null)
             return false;
-        nextVector.setValue(decoder.eval(nextVector));
+        nextVector.setValue(decoder.apply(nextVector));
         if(fitnessFunction.compare(nextVector, super.getBestVector()) < 0) {
             curVector = nextVector;
             super.updateBest(curVector);

@@ -3,7 +3,6 @@ package heuristics.nbh.ils.client;
 import heuristics.Vector;
 import java.util.List;
 import java.util.function.Function;
-import heuristics.Evaluator;
 import heuristics.FitnessFunction;
 
 /**
@@ -14,7 +13,7 @@ public final class FirstIterImpr implements Function<Vector, Vector> {
 
     private final int maxIterations;
     private final Function<Vector, List<Vector>> neighborhood;
-    private final Evaluator decoder;
+    private final Function<? super Vector, Double> decoder;
     private final FitnessFunction fitnessFunction;
 
     /**
@@ -25,7 +24,7 @@ public final class FirstIterImpr implements Function<Vector, Vector> {
      * @param decoder the decoder used to evaluate vectors
      * @param fitnessFunction the fitness function type
      */
-    public FirstIterImpr(int maxIterations, Function<Vector, List<Vector>> neighborhood, Evaluator decoder, FitnessFunction fitnessFunction) {
+    public FirstIterImpr(int maxIterations, Function<Vector, List<Vector>> neighborhood, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction) {
         if(maxIterations < 1)
             throw new IllegalArgumentException("The maximum number of iterations must be greater than 0");
         this.maxIterations = maxIterations;
@@ -50,13 +49,13 @@ public final class FirstIterImpr implements Function<Vector, Vector> {
     public Vector apply(Vector t) {
         boolean improve = true;
         Vector cur = t;
-        cur.setValue(decoder.eval(cur));
+        cur.setValue(decoder.apply(cur));
         int iterations = 0;
         while(improve && iterations < maxIterations) {
             List<Vector> neighbors = neighborhood.apply(cur);
             improve = false;
             for(Vector neighbor: neighbors) {
-                neighbor.setValue(decoder.eval(neighbor));
+                neighbor.setValue(decoder.apply(neighbor));
                 if(fitnessFunction.compare(neighbor, cur) < 0) {
                     cur = neighbor;
                     improve = true;

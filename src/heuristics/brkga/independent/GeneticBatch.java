@@ -1,7 +1,6 @@
 package heuristics.brkga.independent;
 
 import heuristics.Batch;
-import heuristics.Evaluator;
 import heuristics.FitnessFunction;
 import heuristics.Heuristic;
 import heuristics.brkga.client.Configuration;
@@ -9,6 +8,7 @@ import heuristics.brkga.client.CrossingOver;
 import heuristics.brkga.client.DNAGenerator;
 import java.util.function.Predicate;
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  *
@@ -35,7 +35,7 @@ public class GeneticBatch extends Batch {
      * criterion has been met
      * @param seed the seed to utilize for random calls.
      */
-    public GeneticBatch(FitnessFunction fitnessFunction, Configuration config, CrossingOver heredityRule, DNAGenerator individualGenerator, Evaluator decoder, Predicate<Heuristic> stoppingCriterion, long seed) {
+    public GeneticBatch(FitnessFunction fitnessFunction, Configuration config, CrossingOver heredityRule, DNAGenerator individualGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, long seed) {
         if(config.ip < 1)
             throw new IllegalArgumentException("At least 1 thread");
         GeneticAlgorithm[] geneticAlgorithms = new GeneticAlgorithm[config.ip];

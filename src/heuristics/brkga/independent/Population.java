@@ -15,11 +15,13 @@ import java.util.stream.Stream;
  */
 public class Population implements Iterable<Individual> {
     private final Individual[] individuals;
-    private final Comparator<Vector> comparator;
-    Population(DNAGenerator generator, Comparator<Vector> comparator, int p, int n) {
+    private final Comparator<? super Individual> comparator;
+    Population(Consumer<? super Individual> consumer, Comparator<? super Individual> comparator, int p, int n) {
         individuals = new Individual[p];
-        for(int i=0; i<individuals.length; i++)
-            individuals[i] = new Individual(generator, n);
+        for(int i=0; i<individuals.length; i++) {
+            individuals[i] = new Individual(n);
+            consumer.accept(individuals[i]);
+        }
         this.comparator = comparator;
     }
     Individual get(int i) {
@@ -39,7 +41,7 @@ public class Population implements Iterable<Individual> {
     }
 
     /**
-     * Get an iterator over the individuals which are contained into this
+     * Gets an iterator over the individuals which are contained into this
      * population.
      * This method is not thread-safe.
      * @return iterator over individuals

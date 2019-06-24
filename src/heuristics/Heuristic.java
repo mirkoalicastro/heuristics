@@ -28,7 +28,6 @@ public abstract class Heuristic {
         this.bestVector = bestVector;
         this.bestValue = bestValue;
         iterationsWithNoIncrement = 0;
-        System.out.println("Passo a " + bestValue);
     }
     
     /**
