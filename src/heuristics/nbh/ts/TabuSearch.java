@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import heuristics.Vector;
-import heuristics.FitnessFunction;
 import heuristics.Heuristic;
+import java.util.Comparator;
 import java.util.Random;
 
 /**
@@ -22,7 +22,7 @@ public class TabuSearch extends Heuristic {
     private Vector curVector;
     
     private final Function<? super Vector, Double> decoder;
-    private final FitnessFunction fitnessFunction;
+    private final Comparator<? super Vector> fitnessFunction;
     
     private final Random random;
     /**
@@ -38,7 +38,7 @@ public class TabuSearch extends Heuristic {
      * @throws IllegalArgumentException if the tabu list size is not greater
      * than 0
      */
-    TabuSearch(int tabuListSize, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction, Vector feasibleSolution, Function<Vector, List<Vector>> neighborhood, Predicate<? super TabuSearch> stoppingCriterion, Random random) throws IllegalArgumentException {
+    TabuSearch(int tabuListSize, Function<? super Vector, Double> decoder, Comparator<? super Vector> fitnessFunction, Vector feasibleSolution, Function<Vector, List<Vector>> neighborhood, Predicate<? super TabuSearch> stoppingCriterion, Random random) throws IllegalArgumentException {
         this.decoder = decoder;
         this.fitnessFunction = fitnessFunction;
         this.neighborhood = neighborhood;

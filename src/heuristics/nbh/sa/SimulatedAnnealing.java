@@ -4,8 +4,8 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import heuristics.Vector;
-import heuristics.FitnessFunction;
 import heuristics.Heuristic;
+import java.util.Comparator;
 
 /**
  *
@@ -14,7 +14,7 @@ import heuristics.Heuristic;
 public class SimulatedAnnealing extends Heuristic {
     private Vector curVector;
     private final Function<? super Vector, Double> decoder;
-    private final FitnessFunction fitnessFunction;
+    private final Comparator<? super Vector> fitnessFunction;
     private final Predicate<? super SimulatedAnnealing> stoppingCriterion;
     private final Function<Vector, Vector> randomFeasibleNeighbor;
     private final Random rand;
@@ -22,7 +22,7 @@ public class SimulatedAnnealing extends Heuristic {
     private float temperature;
     private final float t0, tDelta;    
 
-    SimulatedAnnealing(float t0, float tDelta, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction, Vector feasibleSolution, Function<Vector, Vector> randomFeasibleNeighbor, Predicate<? super SimulatedAnnealing> stoppingCriterion, Random random) {
+    SimulatedAnnealing(float t0, float tDelta, Function<? super Vector, Double> decoder, Comparator<? super Vector> fitnessFunction, Vector feasibleSolution, Function<Vector, Vector> randomFeasibleNeighbor, Predicate<? super SimulatedAnnealing> stoppingCriterion, Random random) {
         this.t0 = t0;
         this.tDelta = tDelta;
         this.decoder = decoder;

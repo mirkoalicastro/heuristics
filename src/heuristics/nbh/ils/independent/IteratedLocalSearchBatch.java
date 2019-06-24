@@ -2,7 +2,7 @@ package heuristics.nbh.ils.independent;
 
 import heuristics.Batch;
 import heuristics.Vector;
-import heuristics.FitnessFunction;
+import java.util.Comparator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -32,7 +32,7 @@ public class IteratedLocalSearchBatch extends Batch {
      * @param stoppingCriterion the predicate that returns true if the stopping
      * criterion has been met
      */
-    public IteratedLocalSearchBatch (int numThreads, Function<Vector, Vector> localSearch, Function<Vector, Vector> perturbation, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction, Vector[] feasibleSolutions, Predicate<? super IteratedLocalSearch> stoppingCriterion) {
+    public IteratedLocalSearchBatch (int numThreads, Function<Vector, Vector> localSearch, Function<Vector, Vector> perturbation, Function<? super Vector, Double> decoder, Comparator<? super Vector> fitnessFunction, Vector[] feasibleSolutions, Predicate<? super IteratedLocalSearch> stoppingCriterion) {
         if(numThreads < 1)
             throw new IllegalArgumentException("There must be at least one thread");
         if(numThreads != feasibleSolutions.length)

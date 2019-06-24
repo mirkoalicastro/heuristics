@@ -3,7 +3,7 @@ package heuristics.nbh.ils.client;
 import heuristics.Vector;
 import java.util.List;
 import java.util.function.Function;
-import heuristics.FitnessFunction;
+import java.util.Comparator;
 
 /**
  * An implementation of a first improvement local search procedure.
@@ -14,7 +14,7 @@ public final class FirstIterImpr implements Function<Vector, Vector> {
     private final int maxIterations;
     private final Function<Vector, List<Vector>> neighborhood;
     private final Function<? super Vector, Double> decoder;
-    private final FitnessFunction fitnessFunction;
+    private final Comparator<? super Vector> fitnessFunction;
 
     /**
      * Constructs a local search procedure.
@@ -24,7 +24,7 @@ public final class FirstIterImpr implements Function<Vector, Vector> {
      * @param decoder the decoder used to evaluate vectors
      * @param fitnessFunction the fitness function type
      */
-    public FirstIterImpr(int maxIterations, Function<Vector, List<Vector>> neighborhood, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction) {
+    public FirstIterImpr(int maxIterations, Function<Vector, List<Vector>> neighborhood, Function<? super Vector, Double> decoder, Comparator<? super Vector> fitnessFunction) {
         if(maxIterations < 1)
             throw new IllegalArgumentException("The maximum number of iterations must be greater than 0");
         this.maxIterations = maxIterations;

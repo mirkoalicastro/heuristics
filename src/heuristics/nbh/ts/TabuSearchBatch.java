@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import heuristics.Vector;
-import heuristics.FitnessFunction;
+import java.util.Comparator;
 
 /**
  *
@@ -36,7 +36,7 @@ public class TabuSearchBatch extends Batch {
      * criterion has been met
      * @param seed the seed parameter to be used for random calls
      */
-    public TabuSearchBatch (int numThreads, int tabuListSize, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction, Vector[] feasibleSolutions, Function<Vector, List<Vector>> neighborhood, Predicate<? super TabuSearch> stoppingCriterion, long seed) {
+    public TabuSearchBatch (int numThreads, int tabuListSize, Function<? super Vector, Double> decoder, Comparator<? super Vector> fitnessFunction, Vector[] feasibleSolutions, Function<Vector, List<Vector>> neighborhood, Predicate<? super TabuSearch> stoppingCriterion, long seed) {
         if(numThreads < 1)
             throw new IllegalArgumentException("There must be at least one thread");
         if(numThreads != feasibleSolutions.length)

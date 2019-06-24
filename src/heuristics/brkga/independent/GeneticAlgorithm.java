@@ -2,6 +2,7 @@ package heuristics.brkga.independent;
 
 import heuristics.FitnessFunction;
 import heuristics.Heuristic;
+import heuristics.Vector;
 import heuristics.brkga.client.Configuration;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import heuristics.brkga.client.CrossingOver;
 import heuristics.brkga.client.DNAGenerator;
+import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.Random;
 import java.util.function.Function;
@@ -29,9 +31,9 @@ public class GeneticAlgorithm extends Heuristic {
     private final List<Integer> mutantsSelectedIndex;
         
     private final Random rand;
-    private final FitnessFunction fitnessFunction;
+    private final Comparator<? super Vector> fitnessFunction;
     
-    GeneticAlgorithm(FitnessFunction fitnessFunction, Configuration configuration, CrossingOver crossingOver, DNAGenerator sequenceGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
+    GeneticAlgorithm(Comparator<? super Vector> fitnessFunction, Configuration configuration, CrossingOver crossingOver, DNAGenerator sequenceGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
         this.stoppingCriterion = stoppingCriterion;
         this.fitnessFunction = fitnessFunction;
         this.configuration = configuration;

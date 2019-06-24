@@ -3,8 +3,8 @@ package heuristics.nbh.ils.independent;
 import heuristics.Vector;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import heuristics.FitnessFunction;
 import heuristics.Heuristic;
+import java.util.Comparator;
 
 /**
  *
@@ -13,7 +13,7 @@ import heuristics.Heuristic;
 public class IteratedLocalSearch extends Heuristic {
     private Vector curVector;
     private final Function<? super Vector, Double> decoder;
-    private final FitnessFunction fitnessFunction;
+    private final Comparator<? super Vector> fitnessFunction;
     private final Predicate<? super IteratedLocalSearch> stoppingCriterion;
     private final Function<Vector, Vector> localSearch, perturbation;
     
@@ -27,7 +27,7 @@ public class IteratedLocalSearch extends Heuristic {
      * @param stoppingCriterion the predicate that returns true if the stopping
      * criterion has been met
      */
-    IteratedLocalSearch(Function<Vector, Vector> localSearch, Function<Vector, Vector> perturbation, Function<? super Vector, Double> decoder, FitnessFunction fitnessFunction, Vector feasibleSolution, Predicate<? super IteratedLocalSearch> stoppingCriterion) {
+    IteratedLocalSearch(Function<Vector, Vector> localSearch, Function<Vector, Vector> perturbation, Function<? super Vector, Double> decoder, Comparator<? super Vector> fitnessFunction, Vector feasibleSolution, Predicate<? super IteratedLocalSearch> stoppingCriterion) {
         this.decoder = decoder;
         this.localSearch = localSearch;
         this.perturbation = perturbation;

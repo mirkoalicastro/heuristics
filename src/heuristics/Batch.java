@@ -14,7 +14,7 @@ public class Batch {
     private Comparator<? super Heuristic> bestHeuristicComparatorMin;
     private Comparator<? super Heuristic> bestHeuristicComparatorMax;
     private Heuristic[] heuristics;
-    private FitnessFunction fitnessFunction;
+    private Comparator<? super Vector> fitnessFunction;
     
     /**
      * Sets the heuristics.
@@ -36,11 +36,12 @@ public class Batch {
     }
 
     /**
-     * Sets the fitness function type, i.e., specifies if the objective function
-     * must be minimized or maximized.
-     * @param fitnessFunction the fitness function
+     * Sets the vector comparator that orders vectors such that v_1 &lt;= ..
+     * &lt;= v_n means that v_1 has an objective function value that is better
+     * or equal to that of v_2, and so on.
+     * @param fitnessFunction the vector comparator
      */
-    public void setFitnessFunction(FitnessFunction fitnessFunction) {
+    public void setFitnessFunction(Comparator<? super Vector> fitnessFunction) {
         this.bestHeuristicComparatorMin = (h1, h2) -> {
             int comp = fitnessFunction.compare(h1.getBestVector(), h2.getBestVector());
             if(comp != 0)
@@ -57,10 +58,10 @@ public class Batch {
     }
 
     /**
-     * Returns the fitness function type.
-     * @return the fitness function type
+     * Returns the vector comparator.
+     * @return the vector comparator
      */
-    public FitnessFunction getFitnessFunction() {
+    public Comparator<? super Vector> getFitnessFunction() {
         return fitnessFunction;
     }
     
