@@ -8,12 +8,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import heuristics.brkga.client.DNAGenerator;
 import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import heuristics.brkga.client.DnaGenerator;
 
 /**
  *
@@ -21,7 +21,7 @@ import java.util.function.Function;
  */
 public class GeneticAlgorithm extends Heuristic {
     private final Configuration configuration;
-    private final DNAGenerator individualGenerator;
+    private final DnaGenerator individualGenerator;
     private final Population population;
     private final List<Integer> mutantsRemainingIndex;
     private final Function<? super Individual, Double> decoder;
@@ -32,7 +32,7 @@ public class GeneticAlgorithm extends Heuristic {
     private final Random rand;
     private final Comparator<? super Vector> fitnessFunction;
     
-    GeneticAlgorithm(Comparator<? super Vector> fitnessFunction, Configuration configuration, BiFunction<? super Individual, ? super Individual, Individual> crossingOver, DNAGenerator sequenceGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
+    GeneticAlgorithm(Comparator<? super Vector> fitnessFunction, Configuration configuration, BiFunction<? super Individual, ? super Individual, Individual> crossingOver, DnaGenerator sequenceGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
         this.stoppingCriterion = stoppingCriterion;
         this.fitnessFunction = fitnessFunction;
         this.configuration = configuration;

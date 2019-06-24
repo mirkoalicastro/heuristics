@@ -1,13 +1,13 @@
 package heuristics.brkga.independent;
 
 import heuristics.Vector;
-import heuristics.brkga.client.DNAGenerator;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
+import heuristics.brkga.client.DnaGenerator;
 
 /**
  * A population made up by individuals
