@@ -14,7 +14,7 @@ public class Batch {
     private Comparator<? super Heuristic> bestHeuristicComparatorMin;
     private Comparator<? super Heuristic> bestHeuristicComparatorMax;
     private Heuristic[] heuristics;
-    private Comparator<? super Vector> fitnessFunction;
+    private Comparator<? super Vector> comparator;
     
     /**
      * Sets the heuristics.
@@ -39,30 +39,30 @@ public class Batch {
      * Sets the vector comparator that orders vectors such that v_1 &lt;= ..
      * &lt;= v_n means that v_1 has an objective function value that is better
      * or equal to that of v_2, and so on.
-     * @param fitnessFunction the vector comparator
+     * @param comparator the vector comparator
      */
-    public void setFitnessFunction(Comparator<? super Vector> fitnessFunction) {
+    public void setVectorComparator(Comparator<? super Vector> comparator) {
         this.bestHeuristicComparatorMin = (h1, h2) -> {
-            int comp = fitnessFunction.compare(h1.getBestVector(), h2.getBestVector());
+            int comp = comparator.compare(h1.getBestVector(), h2.getBestVector());
             if(comp != 0)
                 return comp;
             return Integer.compare(h1.getIterationsForBestVector(), h2.getIterationsForBestVector());
         };
         this.bestHeuristicComparatorMax = (h1, h2) -> {
-            int comp = fitnessFunction.compare(h1.getBestVector(), h2.getBestVector());
+            int comp = comparator.compare(h1.getBestVector(), h2.getBestVector());
             if(comp != 0)
                 return comp;
             return Integer.compare(h2.getIterationsForBestVector(), h1.getIterationsForBestVector());
         };
-        this.fitnessFunction = fitnessFunction;
+        this.comparator = comparator;
     }
 
     /**
      * Returns the vector comparator.
      * @return the vector comparator
      */
-    public Comparator<? super Vector> getFitnessFunction() {
-        return fitnessFunction;
+    public Comparator<? super Vector> getVectorComparator() {
+        return comparator;
     }
     
     /**
@@ -112,7 +112,7 @@ public class Batch {
     public Vector getBestVector() {
         return IntStream.range(0, heuristics.length)
                 .mapToObj(i -> heuristics[i].getBestVector())
-                .sorted(fitnessFunction)
+                .sorted(comparator)
                 .findFirst()
                 .get();
     }

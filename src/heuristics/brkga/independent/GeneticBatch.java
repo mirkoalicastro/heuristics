@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import heuristics.brkga.client.DnaGenerator;
+import java.util.function.Consumer;
 
 /**
  *
@@ -36,7 +36,7 @@ public class GeneticBatch extends Batch {
      * criterion has been met
      * @param seed the seed to utilize for random calls.
      */
-    public GeneticBatch(Comparator<? super Vector> fitnessFunction, Configuration config, BiFunction<? super Individual, ? super Individual, Individual> heredityRule, DnaGenerator individualGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, long seed) {
+    public GeneticBatch(Comparator<? super Vector> fitnessFunction, Configuration config, BiFunction<? super Individual, ? super Individual, Individual> heredityRule, Consumer<? super Individual> individualGenerator, Function<? super Individual, Double> decoder, Predicate<Heuristic> stoppingCriterion, long seed) {
         if(config.ip < 1)
             throw new IllegalArgumentException("At least 1 thread");
         GeneticAlgorithm[] geneticAlgorithms = new GeneticAlgorithm[config.ip];
@@ -45,7 +45,7 @@ public class GeneticBatch extends Batch {
             random.setSeed(seed+i);
             geneticAlgorithms[i] = new GeneticAlgorithm(fitnessFunction, config, heredityRule, individualGenerator, decoder, stoppingCriterion, random);
         }
-        super.setFitnessFunction(fitnessFunction);
+        super.setVectorComparator(fitnessFunction);
         super.setHeuristics(geneticAlgorithms);
     }
 }

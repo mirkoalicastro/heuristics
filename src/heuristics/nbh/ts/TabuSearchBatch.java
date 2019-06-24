@@ -47,7 +47,7 @@ public class TabuSearchBatch extends Batch {
             random.setSeed(seed+i);
             tabuSearches[i] = new TabuSearch(tabuListSize, decoder, fitnessFunction, feasibleSolutions[i], neighborhood, stoppingCriterion, random);
         }
-        super.setFitnessFunction(fitnessFunction);
+        super.setVectorComparator(fitnessFunction);
         super.setHeuristics(tabuSearches);
     }    
 }

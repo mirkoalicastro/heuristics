@@ -9,9 +9,9 @@ import java.util.function.Predicate;
  */
 public class StoppingCriterion implements Predicate<Heuristic> {
     private long startedAt;
-    private final Comparator<Double> comparator;
-    private final double stoppingOFV;
+    private final Comparator<? super Vector> comparator;
     private final int maxIterationsWithNoIncrement, maxIterations, timeLimit;
+    private final Vector stoppingVector;
 
     /**
      * Creates a heuristic predicate.
@@ -37,20 +37,19 @@ public class StoppingCriterion implements Predicate<Heuristic> {
      * @param maxIterationsWithNoIncrement the maximum number of iterations with
      * no increment
      * @param timeLimit the maximum time in milliseconds
-     * @param fitnessFunction the fitness function type
+     * @param comparator the fitness function type
      * @param stoppingOFV the target objective function value
      * @see #test(heuristics.Heuristic) 
      * @see #resetTime() 
      */
-    public StoppingCriterion(int maxIterations, int maxIterationsWithNoIncrement, int timeLimit, FitnessFunction fitnessFunction, double stoppingOFV) {
+    public StoppingCriterion(int maxIterations, int maxIterationsWithNoIncrement, int timeLimit, Comparator<? super Vector> comparator, double stoppingOFV) {
         this.maxIterations = maxIterations;
         this.maxIterationsWithNoIncrement = maxIterationsWithNoIncrement;
         this.timeLimit = timeLimit*1000;
-        if(fitnessFunction == FitnessFunction.MIN)
-            comparator = (f1, f2) -> Double.compare(f1, f2);
-        else
-            comparator = (f1, f2) -> Double.compare(f2, f1);
-        this.stoppingOFV = stoppingOFV;
+        this.comparator = comparator;
+        Vector vector = new Vector(1);
+        vector.setValue(stoppingOFV);
+        this.stoppingVector = vector;
         resetTime();
     }
 
@@ -73,7 +72,7 @@ public class StoppingCriterion implements Predicate<Heuristic> {
         boolean a = heuristic.getIterations() > maxIterations;
         boolean b = heuristic.getIterationsWithNoIncrement() > maxIterationsWithNoIncrement;
         boolean c = isTimedOut();
-        boolean d = comparator.compare(heuristic.getBestValue(), stoppingOFV) <= 0;
+        boolean d = comparator.compare(heuristic.getBestVector(), stoppingVector) <= 0;
         return a || b || c || d;
     }
     

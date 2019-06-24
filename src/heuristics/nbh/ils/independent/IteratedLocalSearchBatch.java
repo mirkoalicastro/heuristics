@@ -40,7 +40,7 @@ public class IteratedLocalSearchBatch extends Batch {
         IteratedLocalSearch[] iteratedLocalSearches = new IteratedLocalSearch[numThreads];
         for(int i=0; i<iteratedLocalSearches.length; i++)
             iteratedLocalSearches[i] = new IteratedLocalSearch(localSearch, perturbation, decoder, fitnessFunction, feasibleSolutions[i], stoppingCriterion);
-        super.setFitnessFunction(fitnessFunction);
+        super.setVectorComparator(fitnessFunction);
         super.setHeuristics(iteratedLocalSearches);
     }    
 }

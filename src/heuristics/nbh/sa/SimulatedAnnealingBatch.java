@@ -49,7 +49,7 @@ public class SimulatedAnnealingBatch extends Batch {
             random.setSeed(seed+i);
             simulatedAnnealings[i] = new SimulatedAnnealing(t0, tDelta, decoder, fitnessFunction, feasibleSolutions[i], randomFeasibleNeighbor, stoppingCriterion, random);
         }
-        super.setFitnessFunction(fitnessFunction);
+        super.setVectorComparator(fitnessFunction);
         super.setHeuristics(simulatedAnnealings);
     }
 }

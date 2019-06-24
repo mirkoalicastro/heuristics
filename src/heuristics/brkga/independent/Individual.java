@@ -1,7 +1,7 @@
 package heuristics.brkga.independent;
 
 import heuristics.Vector;
-import heuristics.brkga.client.DnaGenerator;
+import java.util.function.Consumer;
 
 /**
  * An individual of a population
@@ -18,12 +18,12 @@ public class Individual extends Vector {
     Individual(int length) {
         super(length);
     }
-    Individual(DnaGenerator generator, int length) {
+    Individual(Consumer<Vector> generator, int length) {
         super(length);
         random(generator);
     }
-    final void random(DnaGenerator generator) {
-        generator.random(super.array);
+    final void random(Consumer<Vector> generator) {
+        generator.accept(this);
     }
 
 }
