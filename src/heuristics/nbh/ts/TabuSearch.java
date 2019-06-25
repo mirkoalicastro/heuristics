@@ -14,8 +14,6 @@ import java.util.Random;
  * @author Mirko Alicastro {@link https://mirkoalicastro.com}
  */
 public class TabuSearch extends Heuristic {
-    public static final int DEFAULT_TABU_LIST_SIZE = 150;
-
     private final Function<Vector, List<Vector>> neighborhood;
     private final Predicate<? super TabuSearch> stoppingCriterion;
     private final LimitedList<Vector> tabuList;
