@@ -11,7 +11,6 @@ import java.util.Map;
 public abstract class Heuristic {
     private int iterations, iterationsWithNoIncrement;
     private final Map<Double, Long> history;
-    private double bestValue;
     private final long initTime;
     private Vector bestVector;
 
@@ -26,7 +25,6 @@ public abstract class Heuristic {
         double bestValue = bestVector.getValue();
         history.put(bestValue, System.currentTimeMillis()-initTime);
         this.bestVector = bestVector;
-        this.bestValue = bestValue;
         iterationsWithNoIncrement = 0;
     }
     
@@ -51,15 +49,6 @@ public abstract class Heuristic {
     public Heuristic() {
         history = new HashMap<>();
         initTime = System.currentTimeMillis();
-    }
-    
-    /**
-     * Returns the objective function value of the incumbent vector.
-     * If the incumbent vector wasn't already set, it returns 0.
-     * @return the incumbent vector objective function value
-     */
-    public double getBestValue() {
-        return bestValue;
     }
     
     /**
