@@ -9,27 +9,27 @@ public class Configuration {
     /**
      * Number of independent populations.
      */
-    public final int ip;
+    public final int populations;
     
     /**
      * Chromosome length.
      */
-    public final int n;
+    public final int chromosomeLength;
 
     /**
      * Population size.
      */
-    public final int p;
+    public final int populationSize;
 
     /**
      * Fraction of population to be the elite-set.
      */
-    public final float pe;
+    public final float eliteFraction;
 
     /**
      * Fraction of population to be replaced by mutants.
      */
-    public final float pm;
+    public final float mutantFraction;
     
     /**
      * Constructs a Config object for a genetic algorithm.
@@ -40,10 +40,10 @@ public class Configuration {
      * @param pm fraction of population to be replaced by mutants
      */
     public Configuration(int n, int ip, int p, float pe, float pm) {
-        this.ip = ip;
-        this.n = n;
-        this.p = p;
-        this.pe = pe;
-        this.pm = pm;
+        this.populations = ip;
+        this.chromosomeLength = n;
+        this.populationSize = p;
+        this.eliteFraction = pe;
+        this.mutantFraction = pm;
     }
 }

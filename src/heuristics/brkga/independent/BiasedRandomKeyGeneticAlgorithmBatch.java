@@ -37,10 +37,10 @@ public class BiasedRandomKeyGeneticAlgorithmBatch extends Batch {
      * @param seed the seed to utilize for random calls.
      */
     public BiasedRandomKeyGeneticAlgorithmBatch(Comparator<? super Vector> fitnessFunction, Configuration config, BiFunction<? super Vector, ? super Vector, Vector> heredityRule, Consumer<? super Vector> individualGenerator, Function<? super Vector, Double> decoder, Predicate<Heuristic> stoppingCriterion, long seed) {
-        if(config.ip < 1)
+        if(config.populations < 1)
             throw new IllegalArgumentException("At least 1 thread");
-        BiasedRandomKeyGeneticAlgorithm[] geneticAlgorithms = new BiasedRandomKeyGeneticAlgorithm[config.ip];
-        for(int i=0; i<config.ip; i++) {
+        BiasedRandomKeyGeneticAlgorithm[] geneticAlgorithms = new BiasedRandomKeyGeneticAlgorithm[config.populations];
+        for(int i=0; i<config.populations; i++) {
             Random random = new Random();
             random.setSeed(seed+i);
             geneticAlgorithms[i] = new BiasedRandomKeyGeneticAlgorithm(fitnessFunction, config, heredityRule, individualGenerator, decoder, stoppingCriterion, random);

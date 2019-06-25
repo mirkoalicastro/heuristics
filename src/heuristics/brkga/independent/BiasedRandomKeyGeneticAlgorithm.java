@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * @author Mirko Alicastro {@link https://mirkoalicastro.com}
  */
 public class BiasedRandomKeyGeneticAlgorithm extends Heuristic {
-    private final Configuration configuration;
+    private final Configuration config;
     private final Consumer<? super Vector> individualGenerator;
     private final Population population;
     private final List<Integer> mutantsRemainingIndex;
@@ -32,17 +32,17 @@ public class BiasedRandomKeyGeneticAlgorithm extends Heuristic {
     private final Random rand;
     private final Comparator<? super Vector> fitnessFunction;
     
-    BiasedRandomKeyGeneticAlgorithm(Comparator<? super Vector> fitnessFunction, Configuration configuration, BiFunction<? super Vector, ? super Vector, Vector> crossingOver, Consumer<? super Vector> individualGenerator, Function<? super Vector, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
+    BiasedRandomKeyGeneticAlgorithm(Comparator<? super Vector> fitnessFunction, Configuration config, BiFunction<? super Vector, ? super Vector, Vector> crossingOver, Consumer<? super Vector> individualGenerator, Function<? super Vector, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
         this.stoppingCriterion = stoppingCriterion;
         this.fitnessFunction = fitnessFunction;
-        this.configuration = configuration;
+        this.config = config;
         this.crossingOver = crossingOver;
         this.individualGenerator = individualGenerator;
         this.decoder = decoder;
-        population = new Population(configuration.p, configuration.n);
+        population = new Population(config.populationSize, config.chromosomeLength);
         population.applyToAll(individualGenerator, true);
         evaluateAndThenSortPopulation();
-        mutantsRemainingIndex = IntStream.range((int)(configuration.pe*configuration.p)+1, configuration.p).boxed().collect(Collectors.toCollection(ArrayList::new));
+        mutantsRemainingIndex = IntStream.range((int)(config.eliteFraction*config.populationSize)+1, config.populationSize).boxed().collect(Collectors.toCollection(ArrayList::new));
         mutantsSelectedIndex = new LinkedList<>();
         if(random == null) {
             random = new Random();
@@ -67,14 +67,14 @@ public class BiasedRandomKeyGeneticAlgorithm extends Heuristic {
         if(stoppingCriterion.test(this))
             return false;
         super.increaseIterations();
-        int eliteSize = (int)(configuration.pe*configuration.p);
-        for(int i=eliteSize; i<configuration.p; i++) {
+        int eliteSize = (int)(config.eliteFraction*config.populationSize);
+        for(int i=eliteSize; i<config.populationSize; i++) {
             Vector notElite = population.get(i);
             int eliteIndex = rand.nextInt(eliteSize);
             Vector elite = population.get(eliteIndex);
             population.set(i, crossingOver.apply(elite, notElite));
         }
-        int mutantsSize = (int)(configuration.pm*configuration.p);
+        int mutantsSize = (int)(config.mutantFraction*config.populationSize);
         for(int i=0; i<mutantsSize; i++) {
             Integer removed = mutantsRemainingIndex.remove(rand.nextInt(mutantsRemainingIndex.size()));
             mutantsSelectedIndex.add(removed);
