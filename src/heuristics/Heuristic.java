@@ -21,7 +21,7 @@ public abstract class Heuristic {
      * as reached at the current time, in milliseconds.
      * @param bestVector the incumbent vector
      */
-    public void updateBest(Vector bestVector) {
+    protected void updateBest(Vector bestVector) {
         double bestValue = bestVector.getValue();
         history.put(bestValue, System.currentTimeMillis()-initTime);
         this.bestVector = bestVector;
