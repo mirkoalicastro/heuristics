@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  *
  * @author Mirko Alicastro {@link https://mirkoalicastro.com}
  */
-public class GeneticBatch extends Batch {
+public class BiasedRandomKeyGeneticAlgorithmBatch extends Batch {
 
     /**
      * Constructs a multi-thread genetic algorithm composed by the specified
@@ -36,14 +36,14 @@ public class GeneticBatch extends Batch {
      * criterion has been met
      * @param seed the seed to utilize for random calls.
      */
-    public GeneticBatch(Comparator<? super Vector> fitnessFunction, Configuration config, BiFunction<? super Vector, ? super Vector, Vector> heredityRule, Consumer<? super Vector> individualGenerator, Function<? super Vector, Double> decoder, Predicate<Heuristic> stoppingCriterion, long seed) {
+    public BiasedRandomKeyGeneticAlgorithmBatch(Comparator<? super Vector> fitnessFunction, Configuration config, BiFunction<? super Vector, ? super Vector, Vector> heredityRule, Consumer<? super Vector> individualGenerator, Function<? super Vector, Double> decoder, Predicate<Heuristic> stoppingCriterion, long seed) {
         if(config.ip < 1)
             throw new IllegalArgumentException("At least 1 thread");
-        GeneticAlgorithm[] geneticAlgorithms = new GeneticAlgorithm[config.ip];
+        BiasedRandomKeyGeneticAlgorithm[] geneticAlgorithms = new BiasedRandomKeyGeneticAlgorithm[config.ip];
         for(int i=0; i<config.ip; i++) {
             Random random = new Random();
             random.setSeed(seed+i);
-            geneticAlgorithms[i] = new GeneticAlgorithm(fitnessFunction, config, heredityRule, individualGenerator, decoder, stoppingCriterion, random);
+            geneticAlgorithms[i] = new BiasedRandomKeyGeneticAlgorithm(fitnessFunction, config, heredityRule, individualGenerator, decoder, stoppingCriterion, random);
         }
         super.setVectorComparator(fitnessFunction);
         super.setHeuristics(geneticAlgorithms);

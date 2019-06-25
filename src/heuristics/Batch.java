@@ -82,7 +82,7 @@ public class Batch {
      */
     public synchronized void iterate(Integer iterations) throws InterruptedException {
         /* Note: don't use parallel stream because we want to force the parallel
-           execution of the evolution of all independent heuristics.
+           execution of the heuristics iterations.
         */
         Thread[] threads = new Thread[heuristics.length];
         for(int i=0; i<threads.length; i++) {

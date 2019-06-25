@@ -19,7 +19,7 @@ import java.util.function.Consumer;
  *
  * @author Mirko Alicastro {@link https://mirkoalicastro.com}
  */
-public class GeneticAlgorithm extends Heuristic {
+public class BiasedRandomKeyGeneticAlgorithm extends Heuristic {
     private final Configuration configuration;
     private final Consumer<? super Vector> individualGenerator;
     private final Population population;
@@ -32,7 +32,7 @@ public class GeneticAlgorithm extends Heuristic {
     private final Random rand;
     private final Comparator<? super Vector> fitnessFunction;
     
-    GeneticAlgorithm(Comparator<? super Vector> fitnessFunction, Configuration configuration, BiFunction<? super Vector, ? super Vector, Vector> crossingOver, Consumer<? super Vector> individualGenerator, Function<? super Vector, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
+    BiasedRandomKeyGeneticAlgorithm(Comparator<? super Vector> fitnessFunction, Configuration configuration, BiFunction<? super Vector, ? super Vector, Vector> crossingOver, Consumer<? super Vector> individualGenerator, Function<? super Vector, Double> decoder, Predicate<Heuristic> stoppingCriterion, Random random) {
         this.stoppingCriterion = stoppingCriterion;
         this.fitnessFunction = fitnessFunction;
         this.configuration = configuration;
