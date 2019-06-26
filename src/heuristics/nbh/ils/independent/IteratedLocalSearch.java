@@ -1,10 +1,10 @@
 package heuristics.nbh.ils.independent;
 
+import heuristics.Heuristic;
 import heuristics.Vector;
+import java.util.Comparator;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import heuristics.Heuristic;
-import java.util.Comparator;
 
 /**
  *

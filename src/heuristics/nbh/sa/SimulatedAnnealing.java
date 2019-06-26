@@ -1,11 +1,11 @@
 package heuristics.nbh.sa;
 
-import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import heuristics.Vector;
 import heuristics.Heuristic;
 import java.util.Comparator;
+import java.util.Random;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  *
